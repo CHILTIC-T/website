@@ -3,14 +3,15 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/fireba
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCk7U1CKIcbGrg9aDF9ai2fOb6ZgHxUO-o",
-    authDomain: "integrador-8daeb.firebaseapp.com",
-    projectId: "integrador-8daeb",
-    storageBucket: "integrador-8daeb.appspot.com",
-    messagingSenderId: "111981913559",
-    appId: "1:111981913559:web:db2151f034a24d8a2d5792",
-    measurementId: "G-EN1B6JL729"
-};
+    apiKey: "AIzaSyCzWKgpp0-7CDx7S1KTDDs0r6lApkG-CEY",
+    authDomain: "chiltic-t.firebaseapp.com",
+    databaseURL: "https://chiltic-t-default-rtdb.firebaseio.com",
+    projectId: "chiltic-t",
+    storageBucket: "chiltic-t.appspot.com",
+    messagingSenderId: "346086628585",
+    appId: "1:346086628585:web:bf2339d41f9c7f947ca478",
+    measurementId: "G-JQJXRPP5GW"
+  };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
