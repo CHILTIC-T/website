@@ -1,5 +1,4 @@
-// script.js
-// Reemplaza con tus credenciales de Firebase   
+//TODO: Integrar un modelo de encriptacion para contraseñas
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
@@ -26,14 +25,14 @@ document.getElementById("adduser").addEventListener('click', function (e) {
     const direccion = document.getElementById('direccion').value;
     const correo = document.getElementById('correo').value;
     const contraseña = document.getElementById('contraseña').value;
+    const username = document.getElementById('nombreusuario').value;
 
-    const safeEmail = correo.replace(/\./g, '_');
-
-    set(ref(db, 'clients/' + safeEmail), {
+    set(ref(db, 'clients/' + username), {
         nombre: nombre,
         direccion: direccion,
-        apellido: apellido, 
+        apellido: apellido,
         correo: correo,
+        usuario: username,
         contraseña: contraseña
     });
 
