@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                         <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
                                         <p class="card-text"><strong>Stock:</strong> ${producto.stock}</p>
                                         <p class="card-text"><strong>Categoría:</strong> ${producto.categoria}</p>
+                                        <button class="btn btn-primary">Comprar</button>
                                     </div>
                                 </div>
                             </div>
