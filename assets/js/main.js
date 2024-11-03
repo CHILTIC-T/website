@@ -4,13 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-bs-theme', currentTheme);
-    themeToggleBtn.textContent = currentTheme === 'dark' ? 'Claro' : 'Oscuro';
+    themeToggleBtn.innerHTML = currentTheme === 'dark' ? '<i class="bi bi-sun-fill"></i>' : '<i class="bi bi-moon-fill"></i>';
 
     themeToggleBtn.addEventListener('click', () => {
         const newTheme = htmlElement.getAttribute('data-bs-theme') === 'light' ? 'dark' : 'light';
         htmlElement.setAttribute('data-bs-theme', newTheme);
 
-        themeToggleBtn.textContent = newTheme === 'dark' ? 'Claro' : 'Oscuro';
+        themeToggleBtn.innerHTML = newTheme === 'dark' ? '<i class="bi bi-sun-fill"></i>' : '<i class="bi bi-moon-fill"></i>';
         localStorage.setItem('theme', newTheme);
     });
+});
+
+document.addEventListener('contextmenu', event => {
+    event.preventDefault();
 });
