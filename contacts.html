@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>CHILTIC-T</title>
+    <title>Contacts - CHILTIC-T</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
@@ -35,12 +35,13 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="categories.html">Categorias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="categories.html">Categorias</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Productos</a></li>
 
-                    <li class="nav-item"><a class="nav-link" href="contacts.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contacts.html">Contacto</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
+                    <!-- Theme Toggle Widget -->
                     <!-- Theme Toggle Widget -->
                     <button class="btn btn-outline-primary me-3" type="button" id="themeToggle">
                         <span id="themeIcon">
@@ -85,28 +86,56 @@
                         </svg>
 
                     </button>
-
-
                 </div>
 
             </div>
         </div>
     </nav>
 
-    <section class="py-5">
-        <div class="container bg-primary-gradient py-4">
+    <section class="container py-5 ">
+        <div class="container bg-primary-gradient py-5">
             <div class="row mb-5">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2 class="fw-bold">Categorías</h2>
-                    <p class="text-muted">Explora las diferentes categorías de nuestros productos CHILTIC-T</p>
+                    <p class="fw-bold text-success mb-2">Contacts</p>
+                    <h2 class="fw-bold">How you can reach us</h2>
                 </div>
             </div>
-            <div class="row row-cols-1 row-cols-md-4 g-4" id="categorias-container">
-                <!-- Las categorías se insertarán aquí mediante JavaScript -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-xl-4">
+                    <div>
+                        <form id="contact-form" class="p-3 p-xl-4">
+                            <div class="mb-3">
+                                <input class="form-control" type="text" id="name" name="name" placeholder="Name"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" type="email" id="email" name="email" placeholder="Email"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="message" name="message" rows="6"
+                                    placeholder="Message" required></textarea>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary shadow d-block w-100" type="button"
+                                    id="submit-btn">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4 mt-4 mt-md-0">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3743.7065257557783!2d-99.21542342530637!3d20.229512714750474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d3d64a97382afb%3A0x90002d23e6b5bae4!2sHidalgo%2035%2C%20Centro%2C%201ra%20Demarcaci%C3%B3n%20Poniente%2C%2042700%20Mixquiahuala%2C%20Hgo.!5e0!3m2!1ses-419!2smx!4v1730706921458!5m2!1ses-419!2smx"
+                            width="100%" height="350" style="border:0; border-radius: 8px;" allowfullscreen=""
+                            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-
 
     <footer class="bg-primary-gradient">
         <div class="container py-4 py-lg-5">
@@ -178,8 +207,7 @@
         </div>
     </footer>
 
-    <script type="module" src="assets/js/get/get-categories.js"></script>
-    <script type="module" src="assets/js/post/post-categories.js"></script>
+    <script type="module" src="assets/js/post/post-contacts.js"></script>
     <script type="module" src="assets/js/main.js"></script>
     <script src="assets/js/user-session.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

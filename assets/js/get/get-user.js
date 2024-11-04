@@ -28,8 +28,11 @@ document.getElementById("loginuser").addEventListener('click', function (e) {
     if (snapshot.exists()) {
       const user = snapshot.val();
       if (user.contraseña === password) {
-        window.location.href = "products.html";
-        localStorage.setItem('username', username);
+        localStorage.setItem('userId', username); 
+        window.location.href = "index.html";
+        localStorage.setItem('username', username);  
+           
+           
       } else {
         alert('Contraseña incorrecta');
       }

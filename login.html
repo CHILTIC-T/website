@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/css/Features-Centered-Icons-icons.css">
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <link rel="shortcut icon" href="assets/img/logo-chiltic1.png"/>
 </head>
 
 <body>
@@ -34,33 +34,21 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="categories.html">Categorias</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.html">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pricing.html">Pagos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Productos</a></li>                    
                     <li class="nav-item"><a class="nav-link" href="contacts.html">Contacto</a></li>
                 </ul>
-                <div class="d-flex align-items-center">
-                    <!-- Translation Widget -->
-                    <div class="dropdown me-3">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Idioma
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                            <li><a class="dropdown-item" href="#">English</a></li>
-                            <li><a class="dropdown-item" href="#">Español</a></li>
-                        </ul>
-                    </div>
-                    <!-- Shopping Cart Widget -->
-                    <button class="btn btn-outline-primary me-3" type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                            <path d="M0 1a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .98.804L3.89 4H14a1 1 0 0 1 .98 1.196l-1.5 9A1 1 0 0 1 12.5 15H4a1 1 0 0 1-.98-.804L1.61 4H1a1 1 0 0 1-1-1zm3.14 3l1.25 7.5h8.22l1.25-7.5H3.14zM5.5 12a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm5 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-                        </svg>
-                    </button>
+                <div class="d-flex align-items-center">                    
                     <!-- Theme Toggle Widget -->
-                    <button class="btn btn-outline-secondary" type="button" id="themeToggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-moon" viewBox="0 0 16 16" id="themeToggle">
-                            <path d="M6 0a6 6 0 0 0 0 12c.34 0 .675-.03 1-.09a7 7 0 1 1 7.09-7c.06.325.09.66.09 1a6 6 0 0 0-8-5.91z"/>
-                        </svg>
-                    </button>
+                    <button class="btn btn-outline-primary me-3" type="button" id="themeToggle">
+                        <span id="themeIcon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
+                                style="fill: rgb(0, 0, 0);transform: msFilter;">
+                                <path
+                                    d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z">
+                                </path>
+                            </svg>
+                        </span>
+                    </button>                                     
                 </div>
                 <a class="btn btn-primary shadow ms-3" role="button" href="signup.html">Sign up</a>
             </div>
