@@ -23,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // Usuario específico que queremos mostrar
-const nombreUsuario = 'alberto'; 
+const nombreUsuario = localStorage.getItem('username');
 //const nombreUsuario = localStorage.getItem( 'username');
 
 
