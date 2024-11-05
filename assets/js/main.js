@@ -33,3 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         themeIcon.querySelector("svg").style.fill = greenColor;
     });
 });
+
+document.addEventListener('contextmenu', event => {
+    event.preventDefault();
+});
