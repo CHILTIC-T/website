@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const authLinkText = document.getElementById('auth-link-text');
     if (username) {
         authLinkText.textContent = 'Perfil';
-        document.getElementById('auth-link').href = 'Profile.html';
+        document.getElementById('auth-link').href = 'profile.html';
     } else {
         authLinkText.textContent = 'Sign up';
         document.getElementById('auth-link').href = 'signup.html';
