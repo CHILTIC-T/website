@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <div class="card-body">
                             <h5 class="card-title">${categoria.nombre}</h5>
                             <p class="text-muted">${categoria.descripcion}</p>                            
-                            <button class="btn btn-primary me-2"  onclick="window.location.href='\products.html';" >Ver Productos</button>
+                            <button class="btn btn-primary me-2" >Ver Productos</button>
                         </div>                        
                     </div>
                 </div>

@@ -64,27 +64,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (const id in productos) {
       const producto = productos[id];
       const productCard = `
-                <div class="col-md-6 mb-4">
-                    <div class="card border-secondary bg-body rounded">
-                        <div class="card-body border border-secondary rounded">
-                            <h5 class="card-title text-primary">${
-                              producto.nombre
-                            }</h5>
-                            <p class="card-text">${producto.descripcion}</p>
-                            <p class="card-text"><strong>Precio:</strong> $${
-                              producto.precio
-                            }</p>
-                            <p class="card-text"><strong>Stock:</strong> ${
-                              producto.stock
-                            }</p>
-                            <button class="btn btn-primary me-2" onclick='agregarAlCarrito(${JSON.stringify(
-                              producto
-                            )})'>Agregar al Carrito</button>
-                           
-                        </div>
-                    </div>
-                </div>
-            `;
+            <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+            <img src="${producto.imagenulr}" class="card-img-top" alt="${producto.nombre}">
+            <div class="card-body">
+                <h5 class="card-title text-dark">${producto.nombre}</h5>
+                <p class="card-text text-muted">${producto.descripcion}</p>
+                <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
+                <p class="card-text"><strong>Stock:</strong> ${producto.stock}</p>
+                <button class="btn btn-outline-primary" onclick='agregarAlCarrito(${JSON.stringify(producto)})'>Agregar al Carrito</button>
+            </div>
+            </div>
+            </div>
+        `;
       container.innerHTML += productCard;
     }
   }
