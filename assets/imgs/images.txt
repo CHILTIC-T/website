@@ -51,29 +51,29 @@ perfil-de-usuario.png: https://res.cloudinary.com/dqduj2ygp/image/upload/v173092
 
 -------------------------------------------------------------------------------------------------------------
 ------------------------------------------- BARRY -----------------------------------------------------------
-te de hinojo: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936023/xcg796anorpdrrrokaps.jpg 
+te de hinojo: 
 
-te-de-anis: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936023/v3qapwdyk3gl7ljmfzsi.jpg 
+te-de-anis: 
 
-te-de-canela: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936023/a5c4eclwfv6k2a2soaxg.jpg 
+te-de-canela: 
 
-te-de-eucalipto: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936023/x0vyjl0tdis0m1uo3cny.jpg 
+te-de-eucalipto: 
 
-te-de Jamaica: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936023/i8mpvcu9bwqjv1zctmig.jpg 
+te-de Jamaica: 
 
-te-de-jengibre: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936023/qmcizvxpdqlsci133tvs.jpg 
+te-de-jengibre: 
 
-te-de-lavanda: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936024/tppr17horwzv7rdbr6rf.jpg 
+te-de-lavanda:  
 
-te-de-limon: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936025/clrgggl71f4jjptl8vzw.jpg 
+te-de-limon:  
 
-te-de-manzana: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936024/ymkcrz1vf3sxont260ja.jpg 
+te-de-manzana:  
 
-te-de-manzanilla: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936024/k56nnkwrtlqa3jwdhimr.jpg 
+te-de-manzanilla: 
 
-te-de-menta: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936024/m24qfbg0o1w6vp6enbkf.jpg 
+te-de-menta: 
 
-te-de-rosas: https://res.cloudinary.com/dqduj2ygp/image/upload/v1730936025/mrvzhnvveomqmse4sewj.jpg 
+te-de-rosas: 
 
 
 -------------------------------------------------------------------------------------------------------------
