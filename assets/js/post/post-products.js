@@ -14,10 +14,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-async function agregarProducto(id, nombre, descripcion, precio, stock, categoriaId) {
+async function agregarProducto(id, imagenulr, nombre, descripcion, precio, stock, categoriaId) {
     try {
         await set(ref(db, 'products/' + id), {
             id,
+            imagenulr,
             nombre,
             descripcion,
             precio,
@@ -33,6 +34,7 @@ async function agregarProducto(id, nombre, descripcion, precio, stock, categoria
 const productos = [
     {
         id: "prod1",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Manzanilla",
         descripcion: "Té de manzanilla artesanal de Hidalgo...",
         precio: 4.99,
@@ -41,6 +43,7 @@ const productos = [
     },
     {
         id: "prod2",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Menta",
         descripcion: "Té de menta refrescante de Hidalgo...",
         precio: 5.49,
@@ -49,6 +52,7 @@ const productos = [
     },
     {
         id: "prod3",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Limón",
         descripcion: "Té de limón cítrico de Hidalgo...",
         precio: 4.99,
@@ -57,6 +61,7 @@ const productos = [
     },
     {
         id: "prod4",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Jamaica",
         descripcion: "Té de jamaica afrutado de Hidalgo...",
         precio: 5.99,
@@ -65,6 +70,7 @@ const productos = [
     },
     {
         id: "prod5",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Canela",
         descripcion: "Té de canela cálido de Hidalgo...",
         precio: 4.49,
@@ -73,6 +79,7 @@ const productos = [
     },
     {
         id: "prod6",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Manzana",
         descripcion: "Té de manzana dulce de Hidalgo...",
         precio: 5.99,
@@ -81,6 +88,7 @@ const productos = [
     },
     {
         id: "prod7",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Jengibre",
         descripcion: "Té de jengibre picante de Hidalgo...",
         precio: 6.49,
@@ -89,6 +97,7 @@ const productos = [
     },
     {
         id: "prod8",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Eucalipto",
         descripcion: "Té de eucalipto reconfortante de Hidalgo...",
         precio: 5.99,
@@ -97,6 +106,7 @@ const productos = [
     },
     {
         id: "prod9",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Lavanda",
         descripcion: "Té de lavanda relajante de Hidalgo...",
         precio: 6.99,
@@ -105,6 +115,7 @@ const productos = [
     },
     {
         id: "prod10",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Rosas",
         descripcion: "Té de rosas aromático de Hidalgo...",
         precio: 7.49,
@@ -113,6 +124,7 @@ const productos = [
     },
     {
         id: "prod11",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Hinojo",
         descripcion: "Té de hinojo digestivo de Hidalgo...",
         precio: 5.49,
@@ -121,6 +133,7 @@ const productos = [
     },
     {
         id: "prod12",
+        imagenulr: "https://res.cloudinary.com/dlvjckdrs/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1730918743/pexels-tijana-drndarski-449691-5475170_eoov4t.jpg",
         nombre: "Té de Anís",
         descripcion: "Té de anís dulce de Hidalgo...",
         precio: 4.99,
@@ -130,5 +143,6 @@ const productos = [
 ];
 
 productos.forEach(producto => {
-    agregarProducto(producto.id, producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.categoriaId);
+    agregarProducto(producto.id, producto.imagenulr, producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.categoriaId);
+
 });
