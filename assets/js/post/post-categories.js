@@ -21,25 +21,25 @@ const categoriasJSON = [
     id: "cat1",
     nombre: "Primavera",
     descripcion: "Productos frescos y florales para la temporada de primavera",
-    imagen: "assets/img/C1.png",
+    imagen: "https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928870/blxknezsix2ccnlgjuta.png",
   },
   {
     id: "cat2",
     nombre: "Verano",
     descripcion: "Productos refrescantes para el caluroso verano",
-    imagen: "assets/img/C2.png",
+    imagen: "https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928870/x5mr99z3gbrfrlgemktl.png",
   },
   {
     id: "cat3",
     nombre: "Otoño",
     descripcion: "Aromas y sabores cálidos para el otoño",
-    imagen: "assets/img/C3.png",
+    imagen: "https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928869/rryogtoeskqagnmbxqra.png",
   },
   {
     id: "cat4",
     nombre: "Invierno",
     descripcion: "Productos cálidos y reconfortantes para el invierno",
-    imagen: "assets/img/C4.png",
+    imagen: "https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928869/dmvju2qtmeg1kwavjiot.png",
   },
 
  
