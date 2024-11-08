@@ -144,4 +144,5 @@ const productos = [
 
 productos.forEach(producto => {
     agregarProducto(producto.id, producto.imagenulr, producto.nombre, producto.descripcion, producto.precio, producto.stock, producto.categoriaId);
+
 });
