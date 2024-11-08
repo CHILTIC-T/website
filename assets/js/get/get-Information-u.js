@@ -36,6 +36,7 @@ async function loadUserInfo() {
             console.log("User data from Firebase:", user); // Depuración
             
             document.getElementById('user-name').textContent = user.nombre || "Nombre no disponible";
+            document.getElementById('user-fname').textContent = user.usuario || "Usuario no disponible";
             document.getElementById('user-lastname').textContent = user.apellido || "Apellido no disponible";
             document.getElementById('user-email').textContent = user.correo || "Correo no disponible";
             document.getElementById('user-address').textContent = user.direccion || "Dirección no disponible";
