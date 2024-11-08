@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const categoryCard = `
                 <div class="col-md-3 mb-4">
                     <div class="card text-center shadow">
-                        <img src="${categoria.imagen}" class="card-img-top" alt="${categoria.nombre}">
+                        <img src="${categoria.imagen}" class="card-img-top" alt="${categoria.nombre}" draggable="false">
                         <div class="card-body">
                             <h5 class="card-title">${categoria.nombre}</h5>
                             <p class="text-muted">${categoria.descripcion}</p>                            
