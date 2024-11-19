@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cartRef = ref(db, `cart/${userId}/${claveProducto}`);
     update(cartRef, producto)
       .then(() => {
-        mostrarAlerta("Producto: "+ producto.nombre + " agregado al carrito");
+        mostrarAlerta("Producto: " + producto.nombre + " agregado al carrito");
       })
       .catch((error) => {
         console.error("Error al agregar al carrito:", error);
@@ -103,14 +103,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Evento para el botón "Ir al carrito"
     document.getElementById("irCarrito").addEventListener("click", () => {
-        window.location.href = "shopping-cart.html"; // Redirigir al carrito
+      window.location.href = "shopping-cart.html"; // Redirigir al carrito
     });
 
     // Ocultar la alerta después de 5 segundos
     setTimeout(() => {
-        alerta.remove();
+      alerta.remove();
     }, 5000);
-}
+  }
 
   function mostrarProductos(productos) {
     const container = document.getElementById("productos-container");
@@ -124,7 +124,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="card">
           <img src="${producto.imagenulr}" class="card-img-top" alt="${producto.nombre}">
           <div class="card-body">
-            <h5 class="card-title">${producto.nombre}</h5>
+             <h5 class="card-title">${producto.nombre}</h5>
+            <p class="card-text">${producto.descripcion}</p>
+            <p class="card-text">$${producto.precio}</p>
             <button class="btn btn-primary" onclick="agregarAlCarrito('${producto.id}')">Agregar al carrito</button>
             <button class="btn btn-secondary" onclick="agregarAFavoritos('${producto.id}')">Agregar a favoritos</button>
           </div>
