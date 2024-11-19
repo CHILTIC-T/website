@@ -36,6 +36,7 @@ async function loadUserInfo() {
             console.log("User data from Firebase:", user); // Depuración
             
             document.getElementById('user-name').textContent = user.nombre || "Nombre no disponible";
+            document.getElementById('user-fname').textContent = user.usuario || "Usuario no disponible";
             document.getElementById('user-lastname').textContent = user.apellido || "Apellido no disponible";
             document.getElementById('user-email').textContent = user.correo || "Correo no disponible";
             document.getElementById('user-address').textContent = user.direccion || "Dirección no disponible";
@@ -52,7 +53,7 @@ async function loadUserInfo() {
             } else {
                 console.warn("No profile details found in Firebase.");
                 document.getElementById('profile-img').src = "https://res.cloudinary.com/dqduj2ygp/image/upload/v1731044861/skmxcuzukk56vwsiarvp.jpg";
-                document.getElementById('background-img').src = ".https://res.cloudinary.com/dqduj2ygp/image/upload/v1731044861/hjbzzvhupc2bevqut95e.png";
+                document.getElementById('background-img').src = "";
             }
         } else {
             console.error("No user data found in Firebase for username:", username);
