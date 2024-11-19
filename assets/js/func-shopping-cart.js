@@ -51,6 +51,76 @@ window.eliminarProducto = function eliminarProducto(id) {
         .catch((error) => console.error("Error al eliminar el producto:", error));
 };
 
+window.confirmarEliminacion = function confirmarEliminacion(id,nombreProducto) {
+    // Crear el contenedor del mensaje emergente
+    const overlay = document.createElement("div");
+    overlay.className = "overlay";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    overlay.style.display = "flex";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+    overlay.style.zIndex = "1050";
+
+    const popup = document.createElement("div");
+    popup.className = "popup  p-4 rounded shadow";
+    popup.style.width = "300px";
+    popup.style.textAlign = "center";
+
+    popup.innerHTML = `
+        <h5>¿Desea eliminar el producto: ${nombreProducto}?</h5>
+        <div class="mt-3">
+            <button class="btn btn-danger btn-sm" id="confirmarSi">Sí</button>
+            <button class="btn btn-secondary btn-sm" id="confirmarNo">No</button>
+        </div>
+    `;
+
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+
+    // Agregar funcionalidad a los botones
+    document.getElementById("confirmarSi").addEventListener("click", () => {
+        eliminarProducto(id);
+        reproducirSonido();
+        mostrarMensaje("Producto eliminado del carrito", "success");
+        document.body.removeChild(overlay); // Cerrar el mensaje emergente
+    });
+
+    document.getElementById("confirmarNo").addEventListener("click", () => {
+        document.body.removeChild(overlay); // Cerrar el mensaje emergente
+    });
+}
+
+function mostrarMensaje(mensaje, tipo) {
+    // Crear el contenedor del mensaje discreto
+    const alerta = document.createElement("div");
+    alerta.className = `alerta-carrito position-fixed text-white rounded shadow`;
+    alerta.style.right = "20px";
+    alerta.style.bottom = "20px";
+    alerta.style.zIndex = "1050";
+    alerta.style.padding = "15px";
+    alerta.style.backgroundColor = tipo === "success" ? "#28a745" : "#dc3545"; // Verde o rojo
+    alerta.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    alerta.style.fontSize = "14px";
+    alerta.innerText = mensaje;
+
+    document.body.appendChild(alerta);
+
+    // Ocultar el mensaje después de 3 segundos
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+
+function reproducirSonido() {
+    const audio = new Audio("assets/sounds/deleteProduct_Sound.mp3"); // Ruta del archivo de sonido
+    audio.play();
+}
+
 function actualizarTotal() {
     const userId = localStorage.getItem('userId');
     const cartRef = ref(db, 'cart/' + userId);
@@ -106,7 +176,7 @@ function mostrarProductosCarrito(productos) {
                     <span id="cantidad-${id}">${cantidad}</span>
                     <button class="btn btn-outline-secondary btn-sm" onclick="actualizarCantidad('${id}', 'incrementar', ${producto.precio})">+</button>
                 </div>
-                <button class="btn btn-outline-danger btn-sm mt-2" onclick="eliminarProducto('${id}')">Eliminar</button>
+                <button class="btn btn-outline-danger btn-sm mt-2" onclick="confirmarEliminacion('${id}','${producto.nombre}')">Eliminar</button>
             </div>
         `;
     }

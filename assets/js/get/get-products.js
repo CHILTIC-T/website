@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cartRef = ref(db, `cart/${userId}/${claveProducto}`);
     update(cartRef, producto)
       .then(() => {
-        alert("Producto agregado al carrito");
+        mostrarAlerta("Producto: "+ producto.nombre + " agregado al carrito");
       })
       .catch((error) => {
         console.error("Error al agregar al carrito:", error);
@@ -75,6 +75,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al eliminar de favoritos:", error);
       });
   }
+
+  function mostrarAlerta(mensaje) {
+    // Reproducir sonido discreto
+    const audio = new Audio("assets/sounds/addCarShop_bell_Sound.mp3"); // Reemplaza con tu archivo de sonido
+    audio.volume = 0.5; // Sonido bajo
+    audio.play();
+
+    // Crear el contenedor de la alerta
+    const alerta = document.createElement("div");
+    alerta.className = "alerta-carrito position-fixed border shadow";
+    alerta.style.right = "20px";
+    alerta.style.bottom = "20px";
+    alerta.style.zIndex = "1050";
+    alerta.style.padding = "15px";
+    alerta.style.borderRadius = "8px";
+    alerta.style.display = "flex";
+    alerta.style.alignItems = "center";
+    alerta.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    alerta.innerHTML = `
+        <div style="flex-grow: 1; font-size: 14px;">${mensaje}</div>
+        <button class="btn btn-primary btn-sm" id="irCarrito" style="margin-left: 10px;">Ir al carrito</button>
+    `;
+
+    // Añadir al cuerpo del documento
+    document.body.appendChild(alerta);
+
+    // Evento para el botón "Ir al carrito"
+    document.getElementById("irCarrito").addEventListener("click", () => {
+        window.location.href = "shopping-cart.html"; // Redirigir al carrito
+    });
+
+    // Ocultar la alerta después de 5 segundos
+    setTimeout(() => {
+        alerta.remove();
+    }, 5000);
+}
 
   function mostrarProductos(productos) {
     const container = document.getElementById("productos-container");
