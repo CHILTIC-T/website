@@ -25,7 +25,6 @@ async function agregarProducto(id, imagenulr, nombre, descripcion, precio, stock
             stock,
             categoria: categoriaId
         });
-        console.log("Producto agregado con ID:", id);
     } catch (error) {
         console.error("Error al agregar producto:", error);
     }

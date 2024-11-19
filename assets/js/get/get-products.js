@@ -1,12 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import {
-  getDatabase,
-  ref,
-  get,
-  push,
-  child,
-  update,
-} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+import { getDatabase, ref, get, update, remove, onValue, child } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const firebaseConfig = {
     apiKey: "AIzaSyCzWKgpp0-7CDx7S1KTDDs0r6lApkG-CEY",
@@ -38,7 +32,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function agregarAlCarrito(producto) {
+  function agregarAlCarrito(productoId) {
+    const producto = productos[productoId];
     const userId = localStorage.getItem("userId");
     const fecha = new Date();
     const dia = fecha.getDate().toString().padStart(2, "0");
@@ -56,6 +51,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al agregar al carrito:", error);
       });
   }
+  function agregarAFavoritos(productoId) {
+    const producto = productos[productoId];
+    const userId = localStorage.getItem("userId");
+    const favRef = ref(db, `favoritos/${userId}/${producto.id}`);
+    update(favRef, producto)
+      .then(() => {
+        alert("Producto agregado a favoritos");
+      })
+      .catch((error) => {
+        console.error("Error al agregar a favoritos:", error);
+      });
+  }
+
+  function quitarDeFavoritos(productoId) {
+    const userId = localStorage.getItem("userId");
+    const favRef = ref(db, `favoritos/${userId}/${productoId}`);
+    remove(favRef)
+      .then(() => {
+        alert("Producto eliminado de favoritos");
+      })
+      .catch((error) => {
+        console.error("Error al eliminar de favoritos:", error);
+      });
+  }
 
   function mostrarProductos(productos) {
     const container = document.getElementById("productos-container");
@@ -63,26 +82,59 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     for (const id in productos) {
       const producto = productos[id];
-      const productCard = `
-            <div class="col-md-4 mb-4">
-            <div class="card border-0 shadow-sm">
-            <img src="${producto.imagenulr}" class="card-img-top" alt="${producto.nombre}" draggable="false">
-            <div class="card-body">
-                <h5 class="card-title text-dark">${producto.nombre}</h5>
-                <p class="card-text text-muted">${producto.descripcion}</p>
-                <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
-                <p class="card-text"><strong>Stock:</strong> ${producto.stock}</p>
-                <button class="btn btn-outline-primary" onclick='agregarAlCarrito(${JSON.stringify(producto)})'>Agregar al Carrito</button>
-            </div>
-            </div>
-            </div>
-        `;
-      container.innerHTML += productCard;
+      const productoDiv = document.createElement("div");
+      productoDiv.className = "col mb-4";
+      productoDiv.innerHTML = `
+        <div class="card">
+          <img src="${producto.imagenulr}" class="card-img-top" alt="${producto.nombre}">
+          <div class="card-body">
+            <h5 class="card-title">${producto.nombre}</h5>
+            <button class="btn btn-primary" onclick="agregarAlCarrito('${producto.id}')">Agregar al carrito</button>
+            <button class="btn btn-secondary" onclick="agregarAFavoritos('${producto.id}')">Agregar a favoritos</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(productoDiv);
     }
   }
 
+  function mostrarFavoritos(favoritos) {
+    const container = document.getElementById("favoritos-container");
+    container.innerHTML = "";
+
+    for (const id in favoritos) {
+      const producto = favoritos[id];
+      const productoDiv = document.createElement("div");
+      productoDiv.className = "col mb-4";
+      productoDiv.innerHTML = `
+        <div class="card">
+          <img src="${producto.imagenulr}" class="card-img-top" alt="${producto.nombre}">
+          <div class="card-body">
+            <h5 class="card-title">${producto.nombre}</h5>
+            <p class="card-text">${producto.descripcion}</p>
+            <p class="card-text">$${producto.precio}</p>
+            <button class="btn btn-danger" onclick="quitarDeFavoritos('${producto.id}')">Quitar de favoritos</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(productoDiv);
+    }
+  }
+
+  function cargarFavoritos() {
+    const userId = localStorage.getItem("userId");
+    const favRef = ref(db, `favoritos/${userId}`);
+    onValue(favRef, (snapshot) => {
+      const favoritos = snapshot.val();
+      mostrarFavoritos(favoritos);
+    });
+  }
+
   window.agregarAlCarrito = agregarAlCarrito;
+  window.agregarAFavoritos = agregarAFavoritos;
+  window.quitarDeFavoritos = quitarDeFavoritos;
 
   const productos = await obtenerProductos();
   mostrarProductos(productos);
+  cargarFavoritos();
 });

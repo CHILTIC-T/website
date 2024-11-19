@@ -18,8 +18,6 @@ const db = getDatabase(app);
 const storage = getStorage(app);
 const username = localStorage.getItem('username'); 
 
-console.log("Username from localStorage:", username);  // Depuración
-
 async function loadUserInfo() {
     if (!username) {
         console.error("No username found in localStorage.");
@@ -33,7 +31,6 @@ async function loadUserInfo() {
         const snapshot = await get(userRef);
         if (snapshot.exists()) {
             const user = snapshot.val();
-            console.log("User data from Firebase:", user); // Depuración
             
             document.getElementById('user-name').textContent = user.nombre || "Nombre no disponible";
             document.getElementById('user-fname').textContent = user.usuario || "Usuario no disponible";
