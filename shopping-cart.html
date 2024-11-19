@@ -56,6 +56,29 @@
         .btn-checkout:hover {
             background-color: #218838;
         }
+
+        .coupon-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .terms-container {
+            margin: 15px 0;
+        }
+
+        .terms-container {
+         margin: 20px 0;
+        }
+
+        #paypal-button-container.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        a { color: blue; text-decoration: underline; }
+
+
     </style>
 </head>
 
@@ -142,17 +165,35 @@
             <div class="col-md-8">
                 <div id="cart-items"></div>
             </div>
-            <!-- Columna de Resumen de Compra -->
+<!-- Cristian -->
             <div class="col-md-4">
                 <div class="summary-container">
                     <h4>Resumen de compra</h4>
                     <p>Productos: <span id="total-items">0</span></p>
                     <p>Envío: $<span id="shipping-cost">0.00</span></p>
-                    <hr>
+                    <div class="coupon-container">
+                        <h5>Aplicar Cupón</h5>
+                        <div class="input-group mb-3">
+                            <input type="text" id="coupon-input" class="form-control" placeholder="Ingresa tu cupón">
+                            <button class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">Aplicar</button>
+                        </div>
+                        <div id="coupon-message"></div>
+                        <p>Descuento: -$<span id="discount-amount">0.00</span></p>
+                    </div>
                     <h4>Total: $<span class="total-price" id="total-price">0.00</span></h4>
-                    <button class="btn btn-checkout mt-3" onclick="procesarCompra()">Continuar compra</button>
+                    <div class="terms-container text-center mb-3">
+                        <label class="form-check">
+                            <input type="checkbox" id="terms-checkbox" class="form-check-input">
+                            <span class="form-check-label">
+                                <a href="terms-and-conditions.html" target="_blank">Aceptar los Términos y Condiciones</a>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div id="paypal-button-container" class="disabled"></div>                    
                 </div>
             </div>
+<!-- Cristian -->
         </div>
     </div>
 
@@ -164,6 +205,7 @@
     <script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-bright.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AV8_WMs9knx_4f1FBxiBb1SmHbYTrlmmvP-0x8dSHK1GKgQfPJ8PlrIxyURpddWBCPMh-7B2PH87FEWe&currency=USD"></script>
 </body>
 
 </html>

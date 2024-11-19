@@ -113,5 +113,119 @@ function mostrarProductosCarrito(productos) {
     actualizarTotal();
 }
 
+// Cristian
 
+let currentDiscount = 0;
+
+function getCurrentTotal() {
+    const totalElement = document.getElementById('total-price');
+    return parseFloat(totalElement.textContent);
+}
+
+
+function validateCoupon(code) {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    
+    const coupons = {
+        'PRIMAVERA': {
+            discount: 0.05,
+            valid: (month === 3 && day >= 21) || (month === 4) || (month === 5) || (month === 6 && day <= 20)
+        },
+        'VERANO': {
+            discount: 0.10,
+            valid: (month === 6 && day >= 21) || (month === 7) || (month === 8) || (month === 9 && day <= 20)
+        },
+        'OTOÑO': {
+            discount: 0.125,
+            valid: (month === 9 && day >= 21) || (month === 10) || (month === 11) || (month === 12 && day <= 20)
+        },
+        'INVIERNO': {
+            discount: 0.15,
+            valid: (month === 12 && day >= 21) || (month === 1) || (month === 2) || (month === 3 && day <= 20)
+        }
+    };
+
+    const coupon = coupons[code.toUpperCase()];
+    if (!coupon) return { valid: false, message: 'Cupón inválido' };
+    if (!coupon.valid) return { valid: false, message: 'Cupón fuera de temporada' };
+    return { valid: true, discount: coupon.discount };
+}
+
+
+window.applyCoupon = function() {
+    const couponCode = document.getElementById('coupon-input').value;
+    const result = validateCoupon(couponCode);
+    const messageElement = document.getElementById('coupon-message');
+    const totalElement = document.getElementById('total-price');
+    const discountElement = document.getElementById('discount-amount');
+    
+    const currentTotal = parseFloat(totalElement.textContent);
+    
+    if (result.valid) {
+        currentDiscount = result.discount;
+        const discountAmount = currentTotal * currentDiscount;
+        const finalTotal = currentTotal - discountAmount;
+        
+        discountElement.textContent = discountAmount.toFixed(2);
+        totalElement.textContent = finalTotal.toFixed(2);
+        messageElement.innerHTML = `<div class="alert alert-success">Cupón aplicado correctamente</div>`;
+        
+        
+        renderPayPalButton();
+    } else {
+        currentDiscount = 0;
+        discountElement.textContent = '0.00';
+        totalElement.textContent = currentTotal.toFixed(2);
+        messageElement.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
+        
+       
+        renderPayPalButton();
+    }
+};
+
+
+function renderPayPalButton() {
+    const paypalContainer = document.getElementById('paypal-button-container');
+    paypalContainer.innerHTML = ''; 
+    
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            const finalAmount = getCurrentTotal();
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: finalAmount.toFixed(2) 
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(orderData) {
+                console.log('Capture result', orderData);
+                alert('Transacción completada. ID: ' + orderData.id);
+            });
+        },
+        onError: function(err) {
+            console.error('Error en la transacción:', err);
+            alert('Ocurrió un error durante la transacción');
+        }
+    }).render('#paypal-button-container');
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    renderPayPalButton();
+});
+        
 document.addEventListener('DOMContentLoaded', obtenerCarrito);
+
+document.getElementById('terms-checkbox').addEventListener('change', function() {
+    const paypalContainer = document.getElementById('paypal-button-container');
+    if (this.checked) {
+        paypalContainer.classList.remove('disabled');
+    } else {
+        paypalContainer.classList.add('disabled');
+    }
+});
