@@ -299,3 +299,45 @@ document.getElementById('terms-checkbox').addEventListener('change', function() 
         paypalContainer.classList.add('disabled');
     }
 });
+
+let timeoutId; // Variable para almacenar el timeout
+
+function iniciarTemporizadorLimpieza() {
+    // Cancela cualquier temporizador activo
+    if (timeoutId) clearTimeout(timeoutId);
+
+    // Establece un nuevo temporizador para limpiar el carrito después de 1 minuto
+    timeoutId = setTimeout(() => {
+        limpiarCarrito();
+        mostrarMensaje("El carrito se ha vaciado por inactividad", "danger");
+    }, 1200000); // 60000 ms = 1 minuto
+}
+
+function limpiarCarrito() {
+    const userId = localStorage.getItem('userId');
+    const cartRef = ref(db, 'cart/' + userId);
+    
+    // Limpia el carrito en la base de datos
+    remove(cartRef)
+        .then(() => {
+            // Limpia la interfaz del carrito
+            const cartContainer = document.getElementById('cart-items');
+            cartContainer.innerHTML = ''; 
+            document.getElementById("total-price").innerText = "0.00";
+            document.getElementById("total-items").innerText = "0";
+            total = 0;
+            totalItems = 0;
+        })
+        .catch((error) => console.error("Error al limpiar el carrito:", error));
+}
+
+// Llama a la función de temporizador cada vez que se agrega un producto
+function reiniciarTemporizadorAlAgregarProducto() {
+    iniciarTemporizadorLimpieza();
+}
+
+// Agrega esta línea para iniciar el temporizador al cargar el carrito inicialmente
+document.addEventListener('DOMContentLoaded', () => {
+    obtenerCarrito();
+    iniciarTemporizadorLimpieza();
+});
