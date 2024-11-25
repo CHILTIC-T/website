@@ -166,33 +166,45 @@
                 <div id="cart-items"></div>
             </div>
 <!-- Cristian -->
-            <div class="col-md-4">
-                <div class="summary-container">
-                    <h4>Resumen de compra</h4>
-                    <p>Productos: <span id="total-items">0</span></p>
-                    <p>Envío: $<span id="shipping-cost">0.00</span></p>
-                    <div class="coupon-container">
-                        <h5>Aplicar Cupón</h5>
-                        <div class="input-group mb-3">
-                            <input type="text" id="coupon-input" class="form-control" placeholder="Ingresa tu cupón">
-                            <button class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">Aplicar</button>
-                        </div>
-                        <div id="coupon-message"></div>
-                        <p>Descuento: -$<span id="discount-amount">0.00</span></p>
-                    </div>
-                    <h4>Total: $<span class="total-price" id="total-price">0.00</span></h4>
-                    <div class="terms-container text-center mb-3">
-                        <label class="form-check">
-                            <input type="checkbox" id="terms-checkbox" class="form-check-input">
-                            <span class="form-check-label">
-                                <a href="terms-and-conditions.html" target="_blank">Aceptar los Términos y Condiciones</a>
-                            </span>
-                        </label>
-                    </div>
-                    
-                    <div id="paypal-button-container" class="disabled"></div>                    
-                </div>
+<div class="col-md-4">
+    <div class="summary-container">
+        <h4>Resumen de compra</h4>
+        <!-- Nuevo campo de dirección -->
+        <div class="address-container mb-3">
+            <p class="mb-2">Dirección de envío: 
+                <span id="address-text">Cargando...</span>
+                <button class="btn btn-sm btn-outline-secondary ms-2" id="edit-address-btn">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+            </p>
+            <div id="address-edit" class="input-group" style="display: none;">
+                <input type="text" id="address-input" class="form-control">
+                <button class="btn btn-outline-secondary" type="button" id="save-address-btn">Guardar</button>
             </div>
+        </div>
+        <p>Productos: <span id="total-items">0</span></p>
+        <p>Envío: $<span id="shipping-cost">0.00</span></p>
+        <div class="coupon-container">
+            <h5>Aplicar Cupón</h5>
+            <div class="input-group mb-3">
+                <input type="text" id="coupon-input" class="form-control" placeholder="Ingresa tu cupón">
+                <button class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">Aplicar</button>
+            </div>
+            <div id="coupon-message"></div>
+            <p>Descuento: -$<span id="discount-amount">0.00</span></p>
+        </div>
+        <h4>Total: $<span class="total-price" id="total-price">0.00</span></h4>
+        <div class="terms-container text-center mb-3">
+            <label class="form-check">
+                <input type="checkbox" id="terms-checkbox" class="form-check-input">
+                <span class="form-check-label">
+                    <a href="terms-and-conditions.html" target="_blank">Aceptar los Términos y Condiciones</a>
+                </span>
+            </label>
+        </div>
+        <div id="paypal-button-container" class="disabled"></div>                    
+    </div>
+</div>
 <!-- Cristian -->
         </div>
     </div>
@@ -206,6 +218,8 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-bright.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AV8_WMs9knx_4f1FBxiBb1SmHbYTrlmmvP-0x8dSHK1GKgQfPJ8PlrIxyURpddWBCPMh-7B2PH87FEWe&currency=USD"></script>
+
+    
 </body>
 
 </html>

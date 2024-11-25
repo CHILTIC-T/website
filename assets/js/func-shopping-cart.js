@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getDatabase, ref, get, update, remove } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+import { getDatabase, ref, get, push, update, remove } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzWKgpp0-7CDx7S1KTDDs0r6lApkG-CEY",
@@ -190,28 +190,76 @@ function renderPayPalButton() {
     const paypalContainer = document.getElementById('paypal-button-container');
     paypalContainer.innerHTML = ''; 
     
+    // Configuración del botón de PayPal
     paypal.Buttons({
-        createOrder: function(data, actions) {
-            const finalAmount = getCurrentTotal();
+        createOrder: function (data, actions) {
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: finalAmount.toFixed(2) 
+                        value: total.toFixed(2),
                     }
                 }]
             });
         },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(orderData) {
-                console.log('Capture result', orderData);
-                alert('Transacción completada. ID: ' + orderData.id);
-            });
+        onApprove: async function (data, actions) {
+            try {
+                // Captura el pago
+                const paymentDetails = await actions.order.capture();
+                const userId = localStorage.getItem('userId');
+                const fechaCompra = new Date().toISOString();
+                
+                // Obtener los productos actuales del carrito desde Firebase
+                const cartRef = ref(db, 'cart/' + userId);
+                const snapshot = await get(cartRef);
+                
+                if (!snapshot.exists()) {
+                    throw new Error('No hay productos en el carrito');
+                }
+    
+                const productosCarrito = snapshot.val();
+                
+                // Crear el objeto de compra con todos los detalles
+                const compraData = {
+                    fecha: fechaCompra,
+                    clienteId: userId,
+                    productos: Object.entries(productosCarrito).map(([id, producto]) => ({
+                        id: id,
+                        nombre: producto.nombre,
+                        descripcion: producto.descripcion,
+                        precio: producto.precio,
+                        cantidad: producto.cantidad || 1
+                    })),
+                    
+                };
+    
+                // Guardar la compra en Firebase
+                const comprasRef = ref(db, 'compras/');
+                await push(comprasRef, compraData);
+    
+                // Limpiar el carrito después de la compra exitosa
+                await remove(cartRef);
+    
+                // Actualizar la interfaz
+                document.getElementById('cart-items').innerHTML = '';
+                document.getElementById("total-price").innerText = "0.00";
+                document.getElementById("total-items").innerText = "0";
+                total = 0;
+                totalItems = 0;
+    
+                // Mostrar mensaje de éxito
+                alert('¡Compra realizada con éxito! Gracias por tu compra.');
+    
+            } catch (error) {
+                console.error("Error al procesar la compra:", error);
+                alert('Hubo un error al procesar tu compra. Por favor, intenta nuevamente.');
+            }
         },
-        onError: function(err) {
-            console.error('Error en la transacción:', err);
-            alert('Ocurrió un error durante la transacción');
+        onError: function (err) {
+            console.error('Error con el pago de PayPal:', err);
+            alert('Hubo un error con el pago. Por favor, intenta nuevamente.');
         }
     }).render('#paypal-button-container');
+// Renderiza el botón en el contenedor
 }
 
 
@@ -229,3 +277,60 @@ document.getElementById('terms-checkbox').addEventListener('change', function() 
         paypalContainer.classList.add('disabled');
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const addressText = document.getElementById('address-text');
+    const addressEdit = document.getElementById('address-edit');
+    const addressInput = document.getElementById('address-input');
+    const editAddressBtn = document.getElementById('edit-address-btn');
+    const saveAddressBtn = document.getElementById('save-address-btn');
+
+    function toggleAddressEdit() {
+        if (addressEdit.style.display === 'none') {
+            addressEdit.style.display = 'flex';
+            addressInput.value = addressText.textContent.trim();
+            addressInput.focus();
+        } else {
+            addressEdit.style.display = 'none';
+        }
+    }
+
+    function saveAddress() {
+        const newAddress = addressInput.value.trim();
+        if (newAddress) {
+            addressText.textContent = newAddress;
+            addressEdit.style.display = 'none';
+        }
+    }
+
+    editAddressBtn.addEventListener('click', toggleAddressEdit);
+    saveAddressBtn.addEventListener('click', saveAddress);
+
+    addressInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            saveAddress();
+        }
+    });
+});
+
+// Función para cargar la dirección del usuario
+async function cargarDireccionUsuario() {
+    const nombreUsuario = localStorage.getItem('username');
+    try {
+        const userRef = ref(db, 'clients/' + nombreUsuario);
+        const snapshot = await get(userRef);
+
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            // Actualizar el texto de la dirección
+            document.getElementById('address-text').textContent = userData.direccion || 'Sin dirección';
+            document.getElementById('address-input').value = userData.direccion || '';
+        }
+    } catch (error) {
+        console.error('Error al cargar la dirección:', error);
+        document.getElementById('address-text').textContent = 'Error al cargar dirección';
+    }
+}
+
+// Llamar a la función cuando se carga la página
+document.addEventListener('DOMContentLoaded', cargarDireccionUsuario);
