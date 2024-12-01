@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
     <link rel="stylesheet" href="assets/css/Features-Centered-Icons-icons.css">
     <link rel="shortcut icon" href="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/uff6dsvhlwqckeylx825.png " />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         .cart-item-container {
             border: 1px solid #e0e0e0;
@@ -77,6 +78,11 @@
         }
 
         a { color: blue; text-decoration: underline; }
+
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
 
 
     </style>
@@ -148,10 +154,7 @@
                             </path>
                             <path d="m11 16 5-4-5-4v3.001H3v2h8z"></path>
                         </svg>
-
                     </button>
-
-
                 </div>
 
             </div>
@@ -188,7 +191,7 @@
             <h5>Aplicar Cupón</h5>
             <div class="input-group mb-3">
                 <input type="text" id="coupon-input" class="form-control" placeholder="Ingresa tu cupón">
-                <button class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">Aplicar</button>
+                <button class="btn btn-outline-secondary" type="button" id="apply-coupon-btn" onclick="applyCoupon()">Aplicar cupón</button>
             </div>
             <div id="coupon-message"></div>
             <p>Descuento: -$<span id="discount-amount">0.00</span></p>
@@ -202,7 +205,26 @@
                 </span>
             </label>
         </div>
-        <div id="paypal-button-container" class="disabled"></div>                    
+        <div id="paypal-button-container" class="disabled"></div>        
+ <!-- Factura -->
+        <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="invoiceModalLabel">Comprobante de Compra</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="invoiceModalBody">
+                        <!-- Contenido de la factura se insertará dinámicamente aquí -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id="generatePDF" type="button" class="btn btn-primary" onclick="descargarFacturaPDF()">Descargar PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+  <!-- Factura -->                   
     </div>
 </div>
 <!-- Cristian -->
@@ -218,6 +240,7 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-bright.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AV8_WMs9knx_4f1FBxiBb1SmHbYTrlmmvP-0x8dSHK1GKgQfPJ8PlrIxyURpddWBCPMh-7B2PH87FEWe&currency=USD"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     
 </body>

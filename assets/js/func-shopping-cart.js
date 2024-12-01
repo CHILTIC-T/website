@@ -170,33 +170,37 @@ window.applyCoupon = function() {
         
         discountElement.textContent = discountAmount.toFixed(2);
         totalElement.textContent = finalTotal.toFixed(2);
-        messageElement.innerHTML = `<div class="alert alert-success">Cupón aplicado correctamente</div>`;
+        messageElement.innerHTML = '<div class="alert alert-success">Cupón aplicado correctamente</div>';
+    
+        // Agregar un atributo de datos para almacenar el monto del descuento
+        discountElement.setAttribute('data-discount-amount', discountAmount);
         
-        
+        document.getElementById('apply-coupon-btn').disabled = true;
         renderPayPalButton();
     } else {
         currentDiscount = 0;
         discountElement.textContent = '0.00';
+        discountElement.setAttribute('data-discount-amount', '0');
         totalElement.textContent = currentTotal.toFixed(2);
         messageElement.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
         
-       
         renderPayPalButton();
     }
 };
 
-
+// Cristian 
 function renderPayPalButton() {
     const paypalContainer = document.getElementById('paypal-button-container');
-    paypalContainer.innerHTML = ''; 
-    
+    paypalContainer.innerHTML = '';
+
     // Configuración del botón de PayPal
     paypal.Buttons({
         createOrder: function (data, actions) {
+            const finalTotal = getCurrentTotal(); // Usa esta función para obtener el total con descuento
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: total.toFixed(2),
+                        value: finalTotal.toFixed(2), // Usa el total final con descuento
                     }
                 }]
             });
@@ -205,19 +209,24 @@ function renderPayPalButton() {
             try {
                 // Captura el pago
                 const paymentDetails = await actions.order.capture();
+                const orderId = data.orderID; // Obtiene el ID de la orden
                 const userId = localStorage.getItem('userId');
                 const fechaCompra = new Date().toISOString();
-                
+
+                // Generar la firma digital usando el orderId
+                const privateKey = generatePrivateKey(32); // Clave privada
+                const signature = signMessage(orderId, privateKey);
+
                 // Obtener los productos actuales del carrito desde Firebase
                 const cartRef = ref(db, 'cart/' + userId);
                 const snapshot = await get(cartRef);
-                
+
                 if (!snapshot.exists()) {
                     throw new Error('No hay productos en el carrito');
                 }
-    
+
                 const productosCarrito = snapshot.val();
-                
+
                 // Crear el objeto de compra con todos los detalles
                 const compraData = {
                     fecha: fechaCompra,
@@ -229,26 +238,34 @@ function renderPayPalButton() {
                         precio: producto.precio,
                         cantidad: producto.cantidad || 1
                     })),
-                    
+                    firma: signature // Agregar la firma al objeto de compra
                 };
-    
+
                 // Guardar la compra en Firebase
                 const comprasRef = ref(db, 'compras/');
                 await push(comprasRef, compraData);
-    
+
                 // Limpiar el carrito después de la compra exitosa
                 await remove(cartRef);
-    
+
                 // Actualizar la interfaz
                 document.getElementById('cart-items').innerHTML = '';
                 document.getElementById("total-price").innerText = "0.00";
                 document.getElementById("total-items").innerText = "0";
                 total = 0;
                 totalItems = 0;
-    
+                // Resetear el descuento y el cupón
+                currentDiscount = 0;
+                document.getElementById('discount-amount').textContent = '0.00';
+                document.getElementById('coupon-input').value = '';
+                document.getElementById('apply-coupon-btn').disabled = false;
+
                 // Mostrar mensaje de éxito
                 alert('¡Compra realizada con éxito! Gracias por tu compra.');
-    
+// Factura 
+                // Después de la compra exitosa, mostrar modal de factura
+                mostrarModalFactura(compraData);
+// Factura 
             } catch (error) {
                 console.error("Error al procesar la compra:", error);
                 alert('Hubo un error al procesar tu compra. Por favor, intenta nuevamente.');
@@ -258,11 +275,36 @@ function renderPayPalButton() {
             console.error('Error con el pago de PayPal:', err);
             alert('Hubo un error con el pago. Por favor, intenta nuevamente.');
         }
-    }).render('#paypal-button-container');
-// Renderiza el botón en el contenedor
+    }).render('#paypal-button-container'); // Renderiza el botón en el contenedor
 }
 
+// Función para generar una clave privada 
+function generatePrivateKey(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let privateKey = '';
+    for (let i = 0; i < length; i++) {
+        privateKey += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return privateKey;
+}
 
+// Función para generar una firma digital
+function signMessage(message, privateKey) {
+    let hash = 0;
+    for (let i = 0; i < message.length; i++) {
+        hash = (hash << 5) - hash + message.charCodeAt(i);
+        hash |= 0; // Convertir a entero de 32 bits
+    }
+    return Math.abs(hash).toString(16) + privateKey;
+}
+
+// Validación de firma digital
+function verifySignature(message, signature, privateKey) {
+    const originalSignature = signMessage(message, privateKey);
+    return originalSignature === signature;
+}
+// Cristian
+ 
 document.addEventListener('DOMContentLoaded', function() {
     renderPayPalButton();
 });
@@ -334,3 +376,103 @@ async function cargarDireccionUsuario() {
 
 // Llamar a la función cuando se carga la página
 document.addEventListener('DOMContentLoaded', cargarDireccionUsuario);
+
+//Factura
+function mostrarModalFactura(datosCompra) {
+    const cuerpoModal = document.getElementById('invoiceModalBody');
+    const hoy = new Date();
+    
+    // Obtener el descuento del atributo de datos
+    const descuentoElemento = document.getElementById('discount-amount');
+    const descuentoMonto = parseFloat(descuentoElemento.getAttribute('data-discount-amount')) || 0;
+
+    // Calcular subtotal antes del descuento
+    let subtotalFactura = 0;
+    datosCompra.productos.forEach(producto => {
+        subtotalFactura += producto.precio * producto.cantidad;
+    });
+
+    const totalFactura = subtotalFactura - descuentoMonto;
+
+    let htmlFactura = `
+        <div class="ticket" style="font-family: 'Courier New', Courier, monospace;">
+            <h2 style="text-align: center; margin-bottom: 10px; font-size: 18px;"><strong>CHILTIC-T</strong></h2>
+            <div style="text-align: center;">
+                <p style="margin: 5px 0; font-size: 14px; line-height: 1.4;">Hidalgo 35, Centro,<br>1ra Demarcación Poniente,<br>42700 Mixquiahuala, Hgo.</p>
+            </div>
+            <div style="text-align: center;">
+                <p style="margin: 5px 0; font-size: 14px; line-height: 1.4;">RFC: TTB040915CY9<br>Moral Régimen General de Ley</p>
+            </div>
+            <hr style="border: none; border-top: 1px dashed #ddd; margin: 10px 0;">
+            <p style="text-align: center; margin: 5px 0; font-size: 14px;">Sucursal: Compra realizada en línea</p>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Producto</th>
+                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Cant.</th>
+                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    datosCompra.productos.forEach(producto => {
+        htmlFactura += `
+            <tr>
+                <td style="padding: 5px;">${producto.nombre}</td>
+                <td style="padding: 5px;">${producto.cantidad}</td>
+                <td style="padding: 5px;">$${(producto.precio * producto.cantidad).toFixed(2)}</td>
+            </tr>
+        `;
+    });
+
+    htmlFactura += `
+                </tbody>
+            </table>
+            <hr style="border: none; border-top: 1px dashed #ddd; margin: 10px 0;">
+            <p style="margin: 5px 0; font-size: 14px;">
+                SUBTOTAL: $${subtotalFactura.toFixed(2)}<br>
+                DESCUENTO: $${descuentoMonto.toFixed(2)}<br>
+                TOTAL: $${totalFactura.toFixed(2)}<br>
+            </p>
+            <div style="text-align: center;">
+                <p>${hoy.toLocaleString()}</p>
+            </div>
+            <div style="text-align: center;">
+                <p style="margin: 5px 0; font-size: 14px;"> NO FISCAL </p>
+            </div>
+            <hr>
+            <p style="text-align: center; word-wrap: break-word; overflow-wrap: break-word; font-size: 0.89em; color: #d0d0d0;">${datosCompra.firma}</p>
+        </div>
+    `;
+
+    cuerpoModal.innerHTML = htmlFactura;
+
+    // Mostrar el modal de factura
+    const modalFactura = new bootstrap.Modal(document.getElementById('invoiceModal'));
+    modalFactura.show();
+}
+
+window.descargarFacturaPDF = function () {
+    const elemento = document.querySelector('.ticket');
+    if (!elemento) {
+        console.error('No se encontró el elemento .ticket');
+    } else {
+    }
+    const opciones = {
+        margin: 1,
+        filename: 'factura.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opciones).from(elemento).save();
+};
+
+
+// Función auxiliar para obtener el total actual (asegúrate de que esta función exista)
+function obtenerTotalActual() {
+    const elementoTotal = document.getElementById('total-price');
+    return parseFloat(elementoTotal.textContent);
+}
