@@ -57,12 +57,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     const favRef = ref(db, `favoritos/${userId}/${producto.id}`);
     update(favRef, producto)
       .then(() => {
-        alert("Producto agregado a favoritos");
+        mostrarAlertaFavAdd("Producto agregado a favoritos", "success");
       })
       .catch((error) => {
         console.error("Error al agregar a favoritos:", error);
+        mostrarAlertaFavAdd("Error al agregar a favoritos", "error");
       });
   }
+
+  function mostrarAlertaFavAdd(mensaje, tipo) {
+
+    const audio = new Audio("assets/sounds/addFavorite_Sound.mp3"); // Reemplaza con tu archivo de sonido
+    audio.volume = 0.7; // Sonido bajo
+    audio.play();
+    // Crear contenedor para la alerta
+    const alerta = document.createElement("div");
+    alerta.className = `alerta-favoritos position-fixed text-white rounded shadow`;
+    alerta.style.right = "20px";
+    alerta.style.bottom = "20px";
+    alerta.style.zIndex = "1050";
+    alerta.style.padding = "15px";
+    alerta.style.backgroundColor = tipo === "success" ? "#28a745" : "#dc3545"; // Verde para éxito, rojo para error
+    alerta.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    alerta.style.fontSize = "14px";
+    alerta.innerText = mensaje;
+
+    document.body.appendChild(alerta);
+    // Remover la alerta después de 5 segundos
+    setTimeout(() => {
+        alerta.remove();
+    }, 5000);
+}
+
+function reproducirSonidoFav(tipo) {
+    const sonido = new Audio(tipo === "success" ? "/assets/sounds/addFavorite_Sound.mp3" : "sonido-error.mp3"); // Cambia según el tipo
+    sonido.play();
+}
 
   function quitarDeFavoritos(productoId) {
     const userId = localStorage.getItem("userId");
