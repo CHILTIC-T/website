@@ -1,4 +1,3 @@
-//TODO: Integrar un modelo de encriptacion para contraseñas
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 

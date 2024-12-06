@@ -52,18 +52,14 @@ async function agregarCategoria(id, nombre, descripcion, imagen) {
       descripcion,
       imagen,
     });
-    console.log("Categoría agregada/actualizada con ID:", id);
   } catch (error) {
-    console.error("Error al agregar/actualizar categoría:", error);
   }
 }
 
 async function eliminarCategoria(id) {
   try {
     await remove(ref(db, "categories/" + id));
-    console.log("Categoría eliminada con ID:", id);
   } catch (error) {
-    console.error("Error al eliminar categoría:", error);
   }
 }
 

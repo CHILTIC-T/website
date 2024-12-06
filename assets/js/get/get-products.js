@@ -1,5 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getDatabase, ref, get, update, remove, onValue, child } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+import {
+  getDatabase,
+  ref,
+  get,
+  update,
+  remove,
+  onValue,
+  child,
+} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const firebaseConfig = {
@@ -51,17 +59,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al agregar al carrito:", error);
       });
   }
+
   function agregarAFavoritos(productoId) {
     const producto = productos[productoId];
     const userId = localStorage.getItem("userId");
     const favRef = ref(db, `favoritos/${userId}/${producto.id}`);
     update(favRef, producto)
       .then(() => {
-        alert("Producto agregado a favoritos");
+        mostrarAlertaFavAdd("Producto agregado a favoritos", "success");
       })
       .catch((error) => {
         console.error("Error al agregar a favoritos:", error);
+        mostrarAlertaFavAdd("Error al agregar a favoritos", "error");
       });
+  }
+
+  function mostrarAlertaFavAdd(mensaje, tipo) {
+    const audio = new Audio("assets/sounds/addFavorite_Sound.mp3"); // Reemplaza con tu archivo de sonido
+    audio.volume = 0.7; // Sonido bajo
+    audio.play();
+    // Crear contenedor para la alerta
+    const alerta = document.createElement("div");
+    alerta.className = `alerta-favoritos position-fixed text-white rounded shadow`;
+    alerta.style.right = "20px";
+    alerta.style.bottom = "20px";
+    alerta.style.zIndex = "1050";
+    alerta.style.padding = "15px";
+    alerta.style.backgroundColor = tipo === "success" ? "#28a745" : "#dc3545"; // Verde para éxito, rojo para error
+    alerta.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    alerta.style.fontSize = "14px";
+    alerta.innerText = mensaje;
+
+    document.body.appendChild(alerta);
+    // Remover la alerta después de 5 segundos
+    setTimeout(() => {
+      alerta.remove();
+    }, 5000);
+  }
+
+  function reproducirSonidoFav(tipo) {
+    const sonido = new Audio(
+      tipo === "success"
+        ? "/assets/sounds/addFavorite_Sound.mp3"
+        : "sonido-error.mp3"
+    ); // Cambia según el tipo
+    sonido.play();
   }
 
   function quitarDeFavoritos(productoId) {
@@ -115,6 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function mostrarProductos(productos) {
     const container = document.getElementById("productos-container");
     container.innerHTML = "";
+    const isAuthenticated = localStorage.getItem("userId") !== null;
 
     for (const id in productos) {
       const producto = productos[id];
@@ -122,13 +165,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       productoDiv.className = "col mb-4";
       productoDiv.innerHTML = `
         <div class="card">
-          <img src="${producto.imagenulr}" class="card-img-top" alt="${producto.nombre}">
+          <img src="${producto.imagenulr}" class="card-img-top" alt="${
+        producto.nombre
+      }">
           <div class="card-body">
-             <h5 class="card-title">${producto.nombre}</h5>
+            <h5 class="card-title">${producto.nombre}</h5>
             <p class="card-text">${producto.descripcion}</p>
             <p class="card-text">$${producto.precio}</p>
-            <button class="btn btn-primary" onclick="agregarAlCarrito('${producto.id}')">Agregar al carrito</button>
-            <button class="btn btn-secondary" onclick="agregarAFavoritos('${producto.id}')">Agregar a favoritos</button>
+            <div style="display: flex;">
+              ${
+                isAuthenticated
+                  ? `<button class="btn btn-primary" onclick="agregarAlCarrito('${id}')">Agregar a carrito</button>`
+                  : `<a href="login.html" class="btn btn-warning">Inicia sesión para agregar</a>`
+              }
+              <button class="btn btn-secondary" style="margin-left: 10px;" onclick="agregarAFavoritos('${id}')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -148,10 +203,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="card">
           <img src="${producto.imagenulr}" class="card-img-top" alt="${producto.nombre}">
           <div class="card-body">
-            <h5 class="card-title">${producto.nombre}</h5>
-            <p class="card-text">${producto.descripcion}</p>
-            <p class="card-text">$${producto.precio}</p>
-            <button class="btn btn-danger" onclick="quitarDeFavoritos('${producto.id}')">Quitar de favoritos</button>
+        <h5 class="card-title">${producto.nombre}</h5>
+        <p class="card-text">${producto.descripcion}</p>
+        <p class="card-text">$${producto.precio}</p>
+        <button class="btn btn-danger" onclick="quitarDeFavoritos('${producto.id}')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+          </svg>
+        </button>
           </div>
         </div>
       `;
