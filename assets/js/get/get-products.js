@@ -61,8 +61,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function agregarAFavoritos(productoId) {
-    const producto = productos[productoId];
     const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Por favor, inicia sesión para agregar productos a favoritos.");
+      return;
+    }
+    const producto = productos[productoId];
     const favRef = ref(db, `favoritos/${userId}/${producto.id}`);
     update(favRef, producto)
       .then(() => {
