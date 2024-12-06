@@ -52,7 +52,6 @@ window.eliminarProducto = function eliminarProducto(id) {
 };
 
 window.confirmarEliminacion = function confirmarEliminacion(id,nombreProducto) {
-    // Crear el contenedor del mensaje emergente
     const overlay = document.createElement("div");
     overlay.className = "overlay";
     overlay.style.position = "fixed";
@@ -81,22 +80,19 @@ window.confirmarEliminacion = function confirmarEliminacion(id,nombreProducto) {
 
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-
-    // Agregar funcionalidad a los botones
     document.getElementById("confirmarSi").addEventListener("click", () => {
         eliminarProducto(id);
         reproducirSonido();
         mostrarMensaje("Producto eliminado del carrito", "success");
-        document.body.removeChild(overlay); // Cerrar el mensaje emergente
+        document.body.removeChild(overlay); 
     });
 
     document.getElementById("confirmarNo").addEventListener("click", () => {
-        document.body.removeChild(overlay); // Cerrar el mensaje emergente
+        document.body.removeChild(overlay); 
     });
 }
 
-function mostrarMensaje(mensaje, tipo) {
-    // Crear el contenedor del mensaje discreto
+function mostrarMensaje(mensaje, tipo) {    
     const alerta = document.createElement("div");
     alerta.className = `alerta-carrito position-fixed text-white rounded shadow`;
     alerta.style.right = "20px";
@@ -109,15 +105,13 @@ function mostrarMensaje(mensaje, tipo) {
     alerta.innerText = mensaje;
 
     document.body.appendChild(alerta);
-
-    // Ocultar el mensaje después de 3 segundos
     setTimeout(() => {
         alerta.remove();
     }, 3000);
 }
 
 function reproducirSonido() {
-    const audio = new Audio("assets/sounds/deleteProduct_Sound.mp3"); // Ruta del archivo de sonido
+    const audio = new Audio("assets/sounds/deleteProduct_Sound.mp3"); 
     audio.play();
 }
 
