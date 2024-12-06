@@ -115,6 +115,104 @@ function reproducirSonido() {
     audio.play();
 }
 
+//Factura
+function mostrarModalFactura(datosCompra) {
+    const cuerpoModal = document.getElementById('invoiceModalBody');
+    const hoy = new Date();
+    
+    // Obtener el descuento del atributo de datos
+    const descuentoElemento = document.getElementById('discount-amount');
+    const descuentoMonto = parseFloat(descuentoElemento.getAttribute('data-discount-amount')) || 0;
+
+    // Calcular subtotal antes del descuento
+    let subtotalFactura = 0;
+    datosCompra.productos.forEach(producto => {
+        subtotalFactura += producto.precio * producto.cantidad;
+    });
+
+    const totalFactura = subtotalFactura - descuentoMonto;
+
+    let htmlFactura = `
+        <div class="ticket" style="font-family: 'Courier New', Courier, monospace;">
+            <h2 style="text-align: center; margin-bottom: 10px; font-size: 18px;"><strong>CHILTIC-T</strong></h2>
+            <div style="text-align: center;">
+                <p style="margin: 5px 0; font-size: 14px; line-height: 1.4;">Hidalgo 35, Centro,<br>1ra Demarcación Poniente,<br>42700 Mixquiahuala, Hgo.</p>
+            </div>
+            <div style="text-align: center;">
+                <p style="margin: 5px 0; font-size: 14px; line-height: 1.4;">RFC: TTB040915CY9<br>Moral Régimen General de Ley</p>
+            </div>
+            <hr style="border: none; border-top: 1px dashed #ddd; margin: 10px 0;">
+            <p style="text-align: center; margin: 5px 0; font-size: 14px;">Sucursal: Compra realizada en línea</p>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Producto</th>
+                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Cant.</th>
+                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    datosCompra.productos.forEach(producto => {
+        htmlFactura += `
+            <tr>
+                <td style="padding: 5px;">${producto.nombre}</td>
+                <td style="padding: 5px;">${producto.cantidad}</td>
+                <td style="padding: 5px;">$${(producto.precio * producto.cantidad).toFixed(2)}</td>
+            </tr>
+        `;
+    });
+
+    htmlFactura += `
+                </tbody>
+            </table>
+            <hr style="border: none; border-top: 1px dashed #ddd; margin: 10px 0;">
+            <p style="margin: 5px 0; font-size: 14px;">
+                SUBTOTAL: $${subtotalFactura.toFixed(2)}<br>
+                DESCUENTO: $${descuentoMonto.toFixed(2)}<br>
+                TOTAL: $${totalFactura.toFixed(2)}<br>
+            </p>
+            <div style="text-align: center;">
+                <p>${hoy.toLocaleString()}</p>
+            </div>
+            <div style="text-align: center;">
+                <p style="margin: 5px 0; font-size: 14px;"> NO FISCAL </p>
+            </div>
+            <hr>
+            <p style="text-align: center; word-wrap: break-word; overflow-wrap: break-word; font-size: 0.89em; color: #d0d0d0;">${datosCompra.firma}</p>
+        </div>
+    `;
+
+    cuerpoModal.innerHTML = htmlFactura;
+
+    // Mostrar el modal de factura
+    const modalFactura = new bootstrap.Modal(document.getElementById('invoiceModal'));
+    modalFactura.show();
+}
+
+window.descargarFacturaPDF = function () {
+    const elemento = document.querySelector('.ticket');
+    if (!elemento) {
+        console.error('No se encontró el elemento .ticket');
+        return;
+    }
+
+    // Esperar un breve momento para asegurar que el DOM esté completamente cargado
+    setTimeout(() => {
+        const opciones = {
+            margin: 1,
+            filename: 'factura.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 }, // Aumenta la escala si el texto se ve borroso
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opciones).from(elemento).save();
+    }, 800); // Espera 500 ms antes de generar el PDF
+};
+
+
 function actualizarTotal() {
     const userId = localStorage.getItem('userId');
     const cartRef = ref(db, 'cart/' + userId);
@@ -419,6 +517,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function decrypt(data, key) {
+    return data.split('').map((char, i) => 
+        String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(i % key.length))
+    ).join('');
+}
 // Función para cargar la dirección del usuario
 async function cargarDireccionUsuario() {
     const nombreUsuario = localStorage.getItem('username');
@@ -428,9 +531,12 @@ async function cargarDireccionUsuario() {
 
         if (snapshot.exists()) {
             const userData = snapshot.val();
+            const key = "CHILTICT"; // Clave para desencriptar
+            const direccionDesencriptada = decrypt(userData.direccion, key); // Desencripta la dirección
+
             // Actualizar el texto de la dirección
-            document.getElementById('address-text').textContent = userData.direccion || 'Sin dirección';
-            document.getElementById('address-input').value = userData.direccion || '';
+            document.getElementById('address-text').textContent = direccionDesencriptada || 'Sin dirección';
+            document.getElementById('address-input').value = direccionDesencriptada || '';
         }
     } catch (error) {
         console.error('Error al cargar la dirección:', error);
@@ -438,105 +544,13 @@ async function cargarDireccionUsuario() {
     }
 }
 
+
 // Llamar a la función cuando se carga la página
 document.addEventListener('DOMContentLoaded', cargarDireccionUsuario);
-
-//Factura
-function mostrarModalFactura(datosCompra) {
-    const cuerpoModal = document.getElementById('invoiceModalBody');
-    const hoy = new Date();
-    
-    // Obtener el descuento del atributo de datos
-    const descuentoElemento = document.getElementById('discount-amount');
-    const descuentoMonto = parseFloat(descuentoElemento.getAttribute('data-discount-amount')) || 0;
-
-    // Calcular subtotal antes del descuento
-    let subtotalFactura = 0;
-    datosCompra.productos.forEach(producto => {
-        subtotalFactura += producto.precio * producto.cantidad;
-    });
-
-    const totalFactura = subtotalFactura - descuentoMonto;
-
-    let htmlFactura = `
-        <div class="ticket" style="font-family: 'Courier New', Courier, monospace;">
-            <h2 style="text-align: center; margin-bottom: 10px; font-size: 18px;"><strong>CHILTIC-T</strong></h2>
-            <div style="text-align: center;">
-                <p style="margin: 5px 0; font-size: 14px; line-height: 1.4;">Hidalgo 35, Centro,<br>1ra Demarcación Poniente,<br>42700 Mixquiahuala, Hgo.</p>
-            </div>
-            <div style="text-align: center;">
-                <p style="margin: 5px 0; font-size: 14px; line-height: 1.4;">RFC: TTB040915CY9<br>Moral Régimen General de Ley</p>
-            </div>
-            <hr style="border: none; border-top: 1px dashed #ddd; margin: 10px 0;">
-            <p style="text-align: center; margin: 5px 0; font-size: 14px;">Sucursal: Compra realizada en línea</p>
-            <table style="width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Producto</th>
-                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Cant.</th>
-                        <th style="text-align: left; padding: 5px; border-bottom: 1px solid #ddd;">Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-
-    datosCompra.productos.forEach(producto => {
-        htmlFactura += `
-            <tr>
-                <td style="padding: 5px;">${producto.nombre}</td>
-                <td style="padding: 5px;">${producto.cantidad}</td>
-                <td style="padding: 5px;">$${(producto.precio * producto.cantidad).toFixed(2)}</td>
-            </tr>
-        `;
-    });
-
-    htmlFactura += `
-                </tbody>
-            </table>
-            <hr style="border: none; border-top: 1px dashed #ddd; margin: 10px 0;">
-            <p style="margin: 5px 0; font-size: 14px;">
-                SUBTOTAL: $${subtotalFactura.toFixed(2)}<br>
-                DESCUENTO: $${descuentoMonto.toFixed(2)}<br>
-                TOTAL: $${totalFactura.toFixed(2)}<br>
-            </p>
-            <div style="text-align: center;">
-                <p>${hoy.toLocaleString()}</p>
-            </div>
-            <div style="text-align: center;">
-                <p style="margin: 5px 0; font-size: 14px;"> NO FISCAL </p>
-            </div>
-            <hr>
-            <p style="text-align: center; word-wrap: break-word; overflow-wrap: break-word; font-size: 0.89em; color: #d0d0d0;">${datosCompra.firma}</p>
-        </div>
-    `;
-
-    cuerpoModal.innerHTML = htmlFactura;
-
-    // Mostrar el modal de factura
-    const modalFactura = new bootstrap.Modal(document.getElementById('invoiceModal'));
-    modalFactura.show();
-}
-
-window.descargarFacturaPDF = function () {
-    const elemento = document.querySelector('.ticket');
-    if (!elemento) {
-        console.error('No se encontró el elemento .ticket');
-    } else {
-    }
-    const opciones = {
-        margin: 1,
-        filename: 'factura.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    html2pdf().set(opciones).from(elemento).save();
-};
-
 
 // Función auxiliar para obtener el total actual (asegúrate de que esta función exista)
 function obtenerTotalActual() {
     const elementoTotal = document.getElementById('total-price');
     return parseFloat(elementoTotal.textContent);
 }
+

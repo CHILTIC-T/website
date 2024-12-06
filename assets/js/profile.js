@@ -22,7 +22,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const nombreUsuario = localStorage.getItem( 'username');
+// Clave de cifrado/descifrado
+const key = "CHILTICT";
+
+// Función para desencriptar datos
+function decrypt(data, key) {
+    return data.split('').map((char, i) => 
+        String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(i % key.length))
+    ).join('');
+}
+
+const nombreUsuario = localStorage.getItem('username');
 
 let currentUserData = null;
 let isEditMode = false;
@@ -38,7 +48,17 @@ async function cargarDatosUsuario() {
         const snapshot = await get(userRef);
 
         if (snapshot.exists()) {
-            currentUserData = snapshot.val();
+            const encryptedData = snapshot.val();
+            
+            // Desencriptar datos del usuario
+            currentUserData = {
+                nombre: decrypt(encryptedData.nombre, key),
+                apellido: decrypt(encryptedData.apellido, key),
+                correo: decrypt(encryptedData.correo, key),
+                direccion: decrypt(encryptedData.direccion, key),
+                usuario: decrypt(encryptedData.usuario, key)
+            };
+
             actualizarInterfaz(currentUserData);
         } else {
             alert('Usuario no encontrado');
@@ -106,7 +126,18 @@ form.addEventListener('submit', async (e) => {
 
     try {
         loadingElement.style.display = 'flex';
-        await update(ref(db, 'clients/' + nombreUsuario), updates);
+
+        // Actualizar datos encriptados en Firebase
+        const encryptedUpdates = {
+            nombre: encrypt(updates.nombre, key),
+            apellido: encrypt(updates.apellido, key),
+            correo: encrypt(updates.correo, key),
+            direccion: encrypt(updates.direccion, key),
+            usuario: encrypt(updates.usuario, key)
+        };
+
+        await update(ref(db, 'clients/' + nombreUsuario), encryptedUpdates);
+
         currentUserData = updates;
         alert('Perfil actualizado exitosamente');
         toggleEditMode();
@@ -120,3 +151,10 @@ form.addEventListener('submit', async (e) => {
 
 // Cargar datos cuando se inicia la página
 document.addEventListener('DOMContentLoaded', cargarDatosUsuario);
+
+// Función de cifrado para actualizar los datos
+function encrypt(data, key) {
+    return data.split('').map((char, i) => 
+        String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(i % key.length))
+    ).join('');
+}
