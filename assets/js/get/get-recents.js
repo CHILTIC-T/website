@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getDatabase, ref, get, child, update} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+import { getDatabase, ref, get, child, update } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const firebaseConfig = {
@@ -114,3 +114,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await obtenerFavoritosPorCliente();
 });
+
+function agregarAlCarrito(productoId) {
+    const producto = productos[productoId];
+    const userId = localStorage.getItem("userId");
+    const fecha = new Date();
+    const dia = fecha.getDate().toString().padStart(2, "0");
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    const anio = fecha.getFullYear();
+    const fechaFormato = `${dia}-${mes}-${anio}`;
+    const nombreProducto = producto.nombre.replace(/ /g, "_");
+    const claveProducto = `${producto.id}-${nombreProducto}-${fechaFormato}`;
+    const cartRef = ref(db, `cart/${userId}/${claveProducto}`);
+    update(cartRef, producto)
+      .then(() => {
+        mostrarAlerta("Producto: " + producto.nombre + " agregado al carrito");
+      })
+      .catch((error) => {
+        console.error("Error al agregar al carrito:", error);
+      });
+  }

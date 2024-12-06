@@ -46,7 +46,7 @@ async function loadUserInfo() {
                 console.log("Profile data from Firebase:", profileData); // Depuración
                 
                 document.getElementById('profile-img').src = profileData.profileImageUrl || "https://res.cloudinary.com/dqduj2ygp/image/upload/v1731044861/skmxcuzukk56vwsiarvp.jpg";
-                document.getElementById('background-img').src = profileData.backgroundImageUrl || "https://res.cloudinary.com/dqduj2ygp/image/upload/v1731044861/hjbzzvhupc2bevqut95e.png";
+                document.getElementById('background-img').src = profileData.backgroundImageUrl || ".https://res.cloudinary.com/dqduj2ygp/image/upload/v1731044861/hjbzzvhupc2bevqut95e.png";
             } else {
                 console.warn("No profile details found in Firebase.");
                 document.getElementById('profile-img').src = "https://res.cloudinary.com/dqduj2ygp/image/upload/v1731044861/skmxcuzukk56vwsiarvp.jpg";

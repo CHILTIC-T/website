@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const favRef = ref(db, `favoritos/${userId}/${productoId}`);
     remove(favRef)
       .then(() => {
-        alert("Producto eliminado de favoritos");
+        
       })
       .catch((error) => {
         console.error("Error al eliminar de favoritos:", error);
