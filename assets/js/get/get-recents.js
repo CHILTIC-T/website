@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <p class="card-text">Cantidad: ${favorito.cantidad}</p>
     <p class="card-text">Precio: ${favorito.precio.toFixed(2)}</p>
     <p class="card-text">Fecha: ${new Date(favorito.fecha).toLocaleDateString()}</p>
-    <a href="../products" class="btn btn-primary">Ir a comprar</a>`;
+    <a href="../../products.html" class="btn btn-primary">Ir a comprar</a>`;
                 card.appendChild(cardBody);
                 cardGroup.appendChild(card);
             }
