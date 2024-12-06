@@ -92,7 +92,7 @@ window.confirmarEliminacion = function confirmarEliminacion(id,nombreProducto) {
     });
 }
 
-function mostrarMensaje(mensaje, tipo) {
+function mostrarMensaje(mensaje, tipo) {    
     const alerta = document.createElement("div");
     alerta.className = `alerta-carrito position-fixed text-white rounded shadow`;
     alerta.style.right = "20px";
