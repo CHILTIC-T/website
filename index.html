@@ -13,16 +13,25 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/style-index.css">
-    <link rel="shortcut icon" href="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/uff6dsvhlwqckeylx825.png " />
+    <link rel="shortcut icon"
+        href="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/uff6dsvhlwqckeylx825.png" />
+    <link rel="shortcut icon"
+        href="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/uff6dsvhlwqckeylx825.png " />
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
 </head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-00VV1XVKGJ"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R65VY7Q8H4"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-    gtag('config', 'G-00VV1XVKGJ');
+
+    gtag('config', 'G-R65VY7Q8H4');
 </script>
 
 <body>
@@ -102,49 +111,71 @@
             </div>
         </div>
     </nav>
-<!-- Este  es el inicio del carrusel-->
-<div class="container">
-    <section class="d-flex align-items-center justify-content-center" style="height: 500px;">
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" style="width: 100%;">
-        
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1731026322/dmazrcqxphanvhxm06pa.png" class="d-block w-100" alt="Imagen 1" style="height: 500px; object-fit: cover;">
-                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center text-white" style="top: 0; bottom: 0;">
-                    <h4>Bienvenido a CHILTIC-T.</h4>
-                    <h2 class="display-3 fw-bold">
-                        Calidad Artesanal <br>Sabores de Temporada
-                    </h2>
+    <!-- Este  es el inicio del carrusel-->
+    <div class="container">
+        <section class="d-flex align-items-center justify-content-center" style="height: 500px;">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000"
+                style="width: 100%;">
+
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                </div>
+
+                <div class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </div>
+                <div class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </div>
+
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1731026322/dmazrcqxphanvhxm06pa.png"
+                            class="d-block w-100" alt="Imagen 1" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center text-white"
+                            style="top: 0; bottom: 0;">
+                            <h4>Bienvenido a CHILTIC-T.</h4>
+                            <h2 class="display-3 fw-bold">
+                                Calidad Artesanal <br>Sabores de Temporada
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1731026001/ktzzzxb7x5ybc4eq2zm5.jpg"
+                            class="d-block w-100" alt="Imagen 2" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center text-white"
+                            style="top: 0; bottom: 0;">
+                            <h3 class="display-5 fw-bold">
+                                "Un sorbo de calma en cada taza"
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1731026004/uuqlvqsij9clldszesj3.jpg"
+                            class="d-block w-100" alt="Imagen 3" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center text-white"
+                            style="top: 0; bottom: 0;">
+                            <h3 class="display-5 fw-bold">
+                                "Té artesanal, creado con pasión"
+                            </h3>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="carousel-item">
-                <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1731026001/ktzzzxb7x5ybc4eq2zm5.jpg" class="d-block w-100" alt="Imagen 2" style="height: 500px; object-fit: cover;">
-                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center text-white" style="top: 0; bottom: 0;">
-                    <h3 class="display-5 fw-bold">
-                        "Un sorbo de calma en cada taza"
-                    </h3>
-                </div>
-            </div>
-            
-            <div class="carousel-item">
-                <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1731026004/uuqlvqsij9clldszesj3.jpg" class="d-block w-100" alt="Imagen 3" style="height: 500px; object-fit: cover;">
-                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center text-white" style="top: 0; bottom: 0;">
-                    <h3 class="display-5 fw-bold">
-                        "Té artesanal, creado con pasión"
-                    </h3>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
-<!-- Este es el fin de lo que ya estaba -->
+        </section>
+    </div>
+    <!-- Este es el fin de lo que ya estaba -->
     <section>
         <div class="container bg-primary-gradient py-5">
             <div class="row">
@@ -159,8 +190,8 @@
                         <div class="card shadow-sm h-100">
                             <div class="row g-0 h-100">
                                 <div class="col-md-4">
-                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/fy6b5yhm7bdi5chv8jsy.png" class="img-fluid rounded-start"
-                                        alt="Infusiones Artesanales" draggable="false">
+                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/fy6b5yhm7bdi5chv8jsy.png"
+                                        class="img-fluid rounded-start" alt="Infusiones Artesanales" draggable="false">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -178,8 +209,8 @@
                         <div class="card shadow-sm h-100">
                             <div class="row g-0 h-100">
                                 <div class="col-md-4">
-                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/pewclwiqoulyu9dxfwui.png" class="img-fluid rounded-start"
-                                        alt="Productos de Temporada" draggable="false">
+                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/pewclwiqoulyu9dxfwui.png"
+                                        class="img-fluid rounded-start" alt="Productos de Temporada" draggable="false">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -196,8 +227,9 @@
                         <div class="card shadow-sm h-100">
                             <div class="row g-0 h-100">
                                 <div class="col-md-4">
-                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/nmksslh3bd5tn2zjz7q9.png" class="img-fluid rounded-start"
-                                        alt="Compromiso con la Calidad" draggable="false">
+                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/nmksslh3bd5tn2zjz7q9.png"
+                                        class="img-fluid rounded-start" alt="Compromiso con la Calidad"
+                                        draggable="false">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -215,8 +247,8 @@
                         <div class="card shadow-sm h-100">
                             <div class="row g-0 h-100">
                                 <div class="col-md-4">
-                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/db5rhix4mo5mnvsqcw7p.png" class="img-fluid rounded-start"
-                                        alt="Soporte al Cliente" draggable="false">
+                                    <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/db5rhix4mo5mnvsqcw7p.png"
+                                        class="img-fluid rounded-start" alt="Soporte al Cliente" draggable="false">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -236,6 +268,16 @@
 
     <section class="py-5 mt-5">
         <div class="container bg-primary-gradient py-5">
+            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                <h2 class="fw-bold"><strong>Productos Recientes</strong></h2>
+                
+            </div>
+            <div id="favoritos"></div>
+        </div>
+    </section>
+
+    <section class="py-5 mt-5">
+        <div class="container bg-primary-gradient py-5">
             <div class="row mb-5">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
                     <p class="fw-bold text-success mb-2">Nuestros Proveedores</p>
@@ -247,8 +289,8 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 d-sm-flex justify-content-sm-center">
                 <div class="col mb-4">
                     <div class="card shadow-sm">
-                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/stcie6zwcicbcc7iizdp.png" class="card-img-top" alt="Proveedor 1"
-                            draggable="false">
+                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/stcie6zwcicbcc7iizdp.png"
+                            class="card-img-top" alt="Proveedor 1" draggable="false">
                         <div class="card-body text-center">
                             <h5 class="fw-bold">Finca de Hierbas Aromáticas</h5>
                             <p class="text-muted">Ubicada en el corazón de las montañas, esta finca proporciona hierbas
@@ -258,8 +300,8 @@
                 </div>
                 <div class="col mb-4">
                     <div class="card shadow-sm">
-                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/r40cf1mrd0k69pqy3axl.png" class="card-img-top" alt="Proveedor 2"
-                            draggable="false">
+                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928867/r40cf1mrd0k69pqy3axl.png"
+                            class="card-img-top" alt="Proveedor 2" draggable="false">
                         <div class="card-body text-center">
                             <h5 class="fw-bold">Plantación de Frutas Tropicales</h5>
                             <p class="text-muted">Frutas cultivadas con esmero que agregan un toque dulce y vibrante a
@@ -269,8 +311,8 @@
                 </div>
                 <div class="col mb-4">
                     <div class="card shadow-sm">
-                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/pnxb2l32glfne37ez3um.png" class="card-img-top" alt="Proveedor 3"
-                            draggable="false">
+                        <img src="https://res.cloudinary.com/dqduj2ygp/image/upload/v1730928868/pnxb2l32glfne37ez3um.png"
+                            class="card-img-top" alt="Proveedor 3" draggable="false">
                         <div class="card-body text-center">
                             <h5 class="fw-bold">Cooperativa de Flores Secas</h5>
                             <p class="text-muted">Flores deshidratadas de alta calidad, ideales para aportar aromas y
@@ -352,6 +394,9 @@
         </div>
     </footer>
 
+    <script type="module" src="assets/js/func-shopping-cart.js"></script>
+    <script type="module" src="assets/js/get/get-products.js"></script>
+    <script type="module" src="assets/js/get/get-recents.js"></script>
     <script src="assets/js/image-configuration.js"></script>
     <script type="module" src="assets/js/main.js"></script>
     <script src="assets/js/user-session.js"></script>

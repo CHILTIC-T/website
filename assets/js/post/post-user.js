@@ -18,6 +18,11 @@ const db = getDatabase(app);
 
 const form = document.getElementById('myForm');
 
+function playSound() {
+    const audio = new Audio("assets/sounds/addUser_Sound.mp3");
+    audio.play();
+}
+
 document.getElementById("adduser").addEventListener('click', function (e) {
     e.preventDefault();
 
@@ -37,5 +42,44 @@ document.getElementById("adduser").addEventListener('click', function (e) {
         contraseña: contraseña
     });
 
-    alert("Singup Successful!, Now you can login");
+    //alert("Singup Successful!, Now you can login");
+
+    playSound();
+
+    const alertContainer = document.createElement('div');
+    alertContainer.className = "modal fade";
+    alertContainer.id = "customAlert";
+    alertContainer.tabIndex = -1;
+    alertContainer.setAttribute("aria-labelledby", "customAlertLabel");
+    alertContainer.setAttribute("aria-hidden", "true");
+    alertContainer.innerHTML = `
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customAlertLabel">Signup Successful!</h5>
+                </div>
+                <div class="modal-body">
+                    Now you can login.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="okButton">OK</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(alertContainer);
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('customAlert'), {
+        backdrop: 'static',
+        keyboard: false
+    });
+    modal.show();
+
+    // Redirect on button click
+    document.getElementById("okButton").addEventListener('click', () => {
+        modal.hide();
+        window.location.href = "login.html";
+    });
+
 });
