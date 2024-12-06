@@ -60,7 +60,7 @@ window.confirmarEliminacion = function confirmarEliminacion(id,nombreProducto) {
     overlay.style.left = "0";
     overlay.style.width = "100%";
     overlay.style.height = "100%";
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    overlay.style.backgroundColor = "var(--bs-body-bg)";
     overlay.style.display = "flex";
     overlay.style.justifyContent = "center";
     overlay.style.alignItems = "center";
@@ -96,7 +96,6 @@ window.confirmarEliminacion = function confirmarEliminacion(id,nombreProducto) {
 }
 
 function mostrarMensaje(mensaje, tipo) {
-    // Crear el contenedor del mensaje discreto
     const alerta = document.createElement("div");
     alerta.className = `alerta-carrito position-fixed text-white rounded shadow`;
     alerta.style.right = "20px";
