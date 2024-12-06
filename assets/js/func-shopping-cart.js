@@ -204,7 +204,6 @@ function mostrarProductosCarrito(productos) {
 
 // Cristian
 
-let currentDiscount = 0;
 
 function getCurrentTotal() {
     const totalElement = document.getElementById('total-price');
