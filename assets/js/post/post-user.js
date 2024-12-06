@@ -1,4 +1,3 @@
-//TODO: Integrar un modelo de encriptacion para contraseñas
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
@@ -11,10 +10,17 @@ const firebaseConfig = {
     messagingSenderId: "346086628585",
     appId: "1:346086628585:web:bf2339d41f9c7f947ca478",
     measurementId: "G-JQJXRPP5GW"
-  };
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+
+// Función de cifrado
+function encrypt(data, key) {
+    return data.split('').map((char, i) => 
+        String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(i % key.length))
+    ).join('');
+}
 
 const form = document.getElementById('myForm');
 
@@ -33,16 +39,16 @@ document.getElementById("adduser").addEventListener('click', function (e) {
     const contraseña = document.getElementById('contraseña').value;
     const username = document.getElementById('nombreusuario').value;
 
-    set(ref(db, 'clients/' + username), {
-        nombre: nombre,
-        direccion: direccion,
-        apellido: apellido,
-        correo: correo,
-        usuario: username,
-        contraseña: contraseña
-    });
+    const key = "CHILTICT";
 
-    //alert("Singup Successful!, Now you can login");
+    set(ref(db, 'clients/' + username), {
+        nombre: encrypt(nombre, key),
+        direccion: encrypt(direccion, key),
+        apellido: encrypt(apellido, key),
+        correo: encrypt(correo, key),
+        usuario: encrypt(username, key),
+        contraseña: encrypt(contraseña, key)
+    });
 
     playSound();
 
@@ -69,14 +75,12 @@ document.getElementById("adduser").addEventListener('click', function (e) {
     `;
     document.body.appendChild(alertContainer);
 
-    // Show modal
     const modal = new bootstrap.Modal(document.getElementById('customAlert'), {
         backdrop: 'static',
         keyboard: false
     });
     modal.show();
 
-    // Redirect on button click
     document.getElementById("okButton").addEventListener('click', () => {
         modal.hide();
         window.location.href = "login.html";

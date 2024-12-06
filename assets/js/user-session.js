@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 document.getElementById('logout-btn').addEventListener('click', () => {
-    localStorage.removeItem('username');
-    window.location.href = "login.html";
+    localStorage.removeItem("userId");
+    localStorage.removeItem('username'); 
+    window.location.href = "login.html"; 
 });
