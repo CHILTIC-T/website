@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al agregar al carrito:", error);
       });
   }
+  
   function agregarAFavoritos(productoId) {
     const producto = productos[productoId];
     const userId = localStorage.getItem("userId");

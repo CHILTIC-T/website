@@ -22,15 +22,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Usuario específico que queremos mostrar
 const nombreUsuario = localStorage.getItem( 'username');
 
-
-// Variables globales para mantener el estado
 let currentUserData = null;
 let isEditMode = false;
 
-// Elementos del DOM
 const form = document.getElementById('profileForm');
 const loadingElement = document.getElementById('loading');
 const buttonGroup = document.getElementById('buttonGroup');
