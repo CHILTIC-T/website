@@ -1,26 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import {
-  getDatabase,
-  ref,
-  get,
-  push,
-  set,
-} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCzWKgpp0-7CDx7S1KTDDs0r6lApkG-CEY",
-  authDomain: "chiltic-t.firebaseapp.com",
-  databaseURL: "https://chiltic-t-default-rtdb.firebaseio.com",
-  projectId: "chiltic-t",
-  storageBucket: "chiltic-t.appspot.com",
-  messagingSenderId: "346086628585",
-  appId: "1:346086628585:web:bf2339d41f9c7f947ca478",
-  measurementId: "G-JQJXRPP5GW",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
 async function procesarCompra() {
     const userId = localStorage.getItem('userId');
     const cartRef = ref(db, `cart/${userId}`);
@@ -45,7 +22,8 @@ async function procesarCompra() {
             nombre: item.nombre,
             cantidad: cantidad,
             precio: item.precio,
-            subtotal: subtotal
+            subtotal: subtotal,
+            productoId: id // Guardar el ID del producto para actualizar el stock más tarde
         });
     }
 
@@ -53,7 +31,7 @@ async function procesarCompra() {
     const paymentRefId = `${userId}-${Date.now()}`;
     const paymentRef = ref(db, `Payments/${paymentRefId}`);
     
-    // Guardar en Firebase y almacenar el ID de pago en localStorage
+    // Guardar la compra en Firebase
     await set(paymentRef, {
         userId: userId,
         productos: productos,
@@ -63,9 +41,21 @@ async function procesarCompra() {
     
     localStorage.setItem('paymentId', paymentRefId); // Guardar el ID de pago en localStorage
 
-    // Redirigir a la página de pagos
     localStorage.setItem('orderSummary', JSON.stringify({ productos, total }));
     window.location.href = "pricing.html";
-}
 
-window.procesarCompra = procesarCompra;
+    for (const producto of productos) {
+        const productRef = ref(db, `products/${producto.productoId}`);
+        const productSnapshot = await get(productRef);
+        
+        if (productSnapshot.exists()) {
+            const productData = productSnapshot.val();
+            const nuevoStock = productData.stock - producto.cantidad;
+
+            await set(productRef, {
+                ...productData, // Conservar los demás campos como "nombre", "descripcion", etc.
+                stock: nuevoStock // Actualizar el stock
+            });
+        }
+    }
+}
